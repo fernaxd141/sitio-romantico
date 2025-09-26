@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros Aniversarios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fff5f5 0%, #f8e8e8 100%);
+            color: #7c3f5c;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .corazon-flotante {
+            position: fixed;
+            font-size: 2rem;
+            color: rgba(255, 105, 180, 0.5);
+            z-index: -1;
+            animation: flotar 8s infinite;
+        }
+        
+        @keyframes flotar {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        header {
+            text-align: center;
+            margin: 20px 0 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ff9bc9 0%, #ff6b8a 100%);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 107, 138, 0.3);
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nombres-pareja {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .corazon {
+            color: #fff;
+            animation: latido 1.5s infinite;
+        }
+        
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .descripcion {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .contador-aniversario {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        .contador-aniversario h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ff6b8a;
+        }
+        
+        .tiempo-juntos {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #7c3f5c;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+        
+        .tiempo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .tiempo-valor {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff9bc9 0%, #ff6b8a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .contenedor-meses {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            width: 90%;
+            max-width: 1200px;
+            margin-bottom: 50px;
+        }
+        
+        .mes {
+            background: linear-gradient(135deg, #ffffff 0%, #fffafa 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .mes:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 107, 138, 0.25);
+            border: 2px solid #ff9bc9;
+        }
+        
+        .mes.actual {
+            background: linear-gradient(135deg, #ffebf3 0%, #ffd6e2 100%);
+            border: 2px solid #ff6b8a;
+        }
+        
+        .mes::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, #ff9bc9 0%, #ff6b8a 100%);
+        }
+        
+        .numero-mes {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ff6b8a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .texto-mes {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #7c3f5c;
+        }
+        
+        .fecha-especial {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #a36b89;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .mensaje {
+            font-size: 1rem;
+            text-align: center;
+            color: #7c3f5c;
+            line-height: 1.5;
+            padding: 10px;
+            background: rgba(255, 214, 226, 0.3);
+            border-radius: 10px;
+        }
+        
+        .icono-corazon {
+            text-align: center;
+            margin-top: 15px;
+            color: #ff6b8a;
+        }
+        
+        /* Modal para detalles del mes */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .contenido-modal {
+            background: white;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: aparecer 0.5s ease;
+        }
+        
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .cerrar-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            color: #ff6b8a;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .cerrar-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .cabecera-modal {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ffd6e2;
+        }
+        
+        .titulo-mes {
+            font-size: 2.5rem;
+            color: #ff6b8a;
+            margin-bottom: 10px;
+        }
+        
+        .fecha-mes {
+            font-size: 1.2rem;
+            color: #a36b89;
+        }
+        
+        .cuerpo-modal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .galeria-fotos {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .foto-principal {
+            width: 100%;
+            height: 300px;
+            background-color: #ffebf3;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .foto-principal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .miniaturas {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .miniatura {
+            width: 80px;
+            height: 80px;
+            background-color: #ffebf3;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .miniatura img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .mensajes {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .mensaje-destacado {
+            background: linear-gradient(135deg, #ffebf3 0%, #ffd6e2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mensaje-destacado::before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            color: rgba(255, 107, 138, 0.2);
+            font-family: Georgia, serif;
+        }
+        
+        .texto-mensaje {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #7c3f5c;
+            margin-bottom: 15px;
+        }
+        
+        .firma {
+            text-align: right;
+            font-style: italic;
+            color: #ff6b8a;
+        }
+        
+        .otros-mensajes {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #ffd6e2;
+        }
+        
+        .otros-mensajes h3 {
+            color: #ff6b8a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ffd6e2;
+        }
+        
+        .lista-mensajes {
+            list-style: none;
+        }
+        
+        .lista-mensajes li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #ffd6e2;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .lista-mensajes li::before {
+            content: '💖';
+            position: absolute;
+            left: 0;
+        }
+        
+        .acciones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .boton {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #ff9bc9 0%, #ff6b8a 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .boton:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 138, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 30px;
+            color: #a36b89;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .contenedor-meses {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nombres-pareja {
+                font-size: 1.5rem;
+            }
+            
+            .tiempo-juntos {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .cuerpo-modal {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contenedor-meses {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .numero-mes {
+                font-size: 2.5rem;
+            }
+            
+            .texto-mes {
+                font-size: 1.3rem;
+            }
+            
+            .contenido-modal {
+                padding: 20px;
+            }
+            
+            .titulo-mes {
+                font-size: 2rem;
+            }
+        }
+
+        .orange-slice {
+    font-size: 40px;
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    transform: rotate(-15deg);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+        .anniversary-message.vintage-card {
+    background: #fff9f0;
+    border: 2px dashed #ffaa5e;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 350px;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(255, 170, 94, 0.2);
+    font-family: 'Dancing Script', cursive;
+}
+    </style>
+</head>
+<body>
+    <!-- Corazones flotantes de fondo -->
+    <div id="corazones-container"></div>
+    
+    <header>
+        
+        <h1>Nuestros Aniversarios</h1>
+        <div class="nombres-pareja">
+            <span id="nombre-1">Fernando</span>
+            <i class="fas fa-heart corazon"></i>
+            <span id="nombre-2">Cinthya</span>
+        </div>
+        <p class="descripcion">Cada mes juntos es una nueva razón para celebrar nuestro amor. Aquí guardamos todos nuestros aniversarios especiales.</p>
+    </header>
+
+    <div class="anniversary-message vintage-card">
+    <div class="orange-slice">🍊</div>
+    <h3>Feliz aniversario,</h3>
+    <p>mi media naranja con gajitos a veces ácidos<br>pero siempre dulces al final. <span class="sparkle">✨</span></p>
+</div>
+
+    
+    <!-- Audio oculto -->
+<audio id="bg-music" loop>
+  <source src="img/musica.mp3" type="audio/mpeg">
+  Tu navegador no soporta el audio.
+</audio>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const audio = document.getElementById('bg-music');
+
+  // Verifica si viene del login
+  if (localStorage.getItem('playMusic') === 'true') {
+    audio.play().catch(() => {
+      console.log("El navegador requiere interacción para reproducir música.");
+    });
+
+    // Limpia el flag para no repetir en cada recarga
+    localStorage.removeItem('playMusic');
+  }
+
+  // Botón manual por si falla autoplay
+  document.getElementById('music-btn').addEventListener('click', () => {
+    audio.play();
+  });
+});
+</script>
+
+
+    
+    
+    <div class="contador-aniversario">
+        <h2>Llevamos juntos</h2>
+        <div class="tiempo-juntos">
+            <div class="tiempo-item">
+                <span class="tiempo-valor" id="anos">1</span>
+                <span>Años</span>
+            </div>
+            <div class="tiempo-item">
+                <span class="tiempo-valor" id="meses">0</span>
+                <span>Meses</span>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="contenedor-meses">
+        <div class="mes actual" data-mes="0">
+            <div class="numero-mes">0</div>
+            <div class="texto-mes">Mes</div>
+            <div class="fecha-especial">25 de Setiembre, 2024</div>
+            <div class="mensaje">El mes , donde todo comenzó.</div>
+            <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        </div>
+        
+        <div class="mes" data-mes="1">
+            <div class="numero-mes">1</div>
+            <div class="texto-mes">Primer Mes</div>
+            <div class="fecha-especial">25 de Octubre, 2024</div>
+            <div class="mensaje">Cumplimos 1 mes como pareja por primera vez, y no sabes la inmesa felicidad que me causo eso.</div>
+            <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        </div>
+
+        <div class="mes" data-mes="2">
+            <div class="numero-mes">2</div>
+            <div class="texto-mes">Segundo Mes</div>
+            <div class="fecha-especial">25 de Noviembre, 2024</div>
+            <div class="mensaje">2 meses a tu lado y senti que cada día contigo era un regalo, lleno de sonrisas, amor y recuerdos que quedarán para siempre en mi corazón. </div>
+            <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        </div>
+        
+        <div class="mes" data-mes="3">
+            <div class="numero-mes">9</div>
+            <div class="texto-mes">Noveno Mes</div>
+            <div class="fecha-especial">25 de Junio, 2025</div>
+            <div class="mensaje">Fue la Primera vez donde aplique mis conocimientos de la universidad para hacerte algo unico y especial para ti recuerdas el link que te mande</div>
+            <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        </div>
+        
+        <div class="mes" data-mes="4">
+            <div class="numero-mes">12</div>
+            <div class="texto-mes">1 año</div>
+            <div class="fecha-especial">25 de Setiembre, 2025</div>
+            <div class="mensaje">1 año .</div>
+            <div class="icono-corazon"><i class="fas fa-heart"></i></div>
+        </div>
+        
+       
+    </div>
+    
+    <!-- Modal para detalles del mes -->
+    <div id="modal-mes" class="modal">
+        <div class="contenido-modal">
+            <span class="cerrar-modal">&times;</span>
+            
+            <div class="cabecera-modal">
+                <h2 class="titulo-mes" id="titulo-mes">Primer Mes</h2>
+                <p class="fecha-mes" id="fecha-mes">15 de Enero, 2022</p>
+            </div>
+            
+            <div class="cuerpo-modal">
+                <div class="galeria-fotos">
+                    <div class="foto-principal">
+                        <img id="foto-principal" src="https://placehold.co/600x400/ffebf3/7c3f5c?text=Tu+Foto+Aquí" alt="Foto del mes">
+                    </div>
+                    <div class="miniaturas">
+                        <div class="miniatura" data-foto="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+1">
+                            <img src="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+1" alt="Miniatura 1">
+                        </div>
+                        <div class="miniatura" data-foto="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+2">
+                            <img src="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+2" alt="Miniatura 2">
+                        </div>
+                        <div class="miniatura" data-foto="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+3">
+                            <img src="https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+3" alt="Miniatura 3">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mensajes">
+                    <div class="mensaje-destacado">
+                        <p class="texto-mensaje" id="mensaje-destacado">Este primer mes contigo ha sido el mejor comienzo de mi vida. Cada día a tu lado es un regalo que atesoro profundamente.</p>
+                        <p class="firma" id="firma-mensaje">- Para mi amor</p>
+                    </div>
+                    
+                    <div class="otros-mensajes">
+                        <h3>Más recuerdos de este mes</h3>
+                        <ul class="lista-mensajes" id="lista-mensajes">
+                            <li>Nuestra primera cita bajo las estrellas</li>
+                            <li>Esa tarde de cine abrazados en el sofá</li>
+                            <li>Cuando cocinamos juntos por primera vez</li>
+                            <li>El día que me miraste y supe que esto era especial</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="acciones">
+                <button class="boton" id="btn-compartir">
+                    <i class="fas fa-share-alt"></i> Compartir recuerdo
+                </button>
+                <button class="boton" id="btn-guardar">
+                    <i class="fas fa-download"></i> Guardar para siempre
+                </button>
+                
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Creado con <i class="fas fa-heart" style="color: #ff6b8a;"></i> para la persona más especial de mi vida</p>
+    </footer>
+
+    <script>
+        // Datos para cada mes (en una aplicación real, estos vendrían de una base de datos)
+        const datosMeses = {
+            1: {
+                titulo: "Primer Mes",
+                fecha: "25 de Octubre, 2024",
+                mensajeDestacado: "Este primer mes contigo ha sido el mejor comienzo de mi vida. Cada día a tu lado es un regalo que atesoro profundamente.",
+                firma: "- Para mi amor",
+                mensajes: [
+                    "Decidimos tomarnos foto por primera vez",
+                    "Nos quedabamos horas y horas conversando y estando juntos",
+                    "No nos queriamos separar"
+                    
+                ],
+                fotos: [
+                    "img/foto1.1mes.jpeg",
+                    "img/foto1.2mes.jpeg",
+                    "img/imagen1.3.jpeg"
+                ]
+            },
+            2: {
+                titulo: "Segundo Mes",
+                fecha: "25 Noviembre, 2024",
+                mensajeDestacado: "Este mes recuerdo aquel día en que por primera vez recibí un regalo tan especial, y fue tuyo 💝… jamás imaginé que lo harías, pero en ese instante me hiciste sentir único, amado y feliz 🌹✨",
+                firma: "- Con todo mi amor",
+                mensajes: [
+                    "El Pinguino que me regalaste con el olor a tu perfume ",
+                    "En la gorrita del pinguino venia una cartita tuya",
+                    "Me hiciste chocotejas",
+                    
+                ],
+                fotos: [
+                    "img/foto2.3.jpeg",
+                    "img/foto2.jpeg",
+                    "img/foto2.1.jpeg"
+                ]
+            },
+            3: {
+                titulo: "Noveno Mes",
+                fecha: "25 de Junio, 2025",
+                mensajeDestacado: "Este mes fue especial y unico por que asi como te hice un detalle especial tambien queria que te sientas unica y te guste lo que hice para ti ",
+                firma: "- Tu compañero de aventuras",
+                mensajes: [
+                    "Te hice una pequeña web para ti y con un mensaje muy lindo",
+                    "Empezamos a hacer muchisimas cosas de parejas",
+                    "Empece a verte mas seguido y ya no nos queriamos separar mucho ",
+                    "Tuvimos discusiones pero a pesar de eso seguiamos juntos y firmes con nuestra relacion"
+                ],
+                fotos: [
+                    "img/foto9.1.jpeg",
+                    "img/foto9.2.jpeg",
+                    "img/foto9.3.jpeg"
+                ]
+
+            },
+            4: {
+                titulo: "Doce Meses",
+                fecha: "25 de Setiembre, 2025",
+                mensajeDestacado: "Nuestro primer año fue especial aquel mes, por que pase fechas especiales contigo",
+                firma: "- Tu compañero de aventuras",
+                mensajes: [
+                    "Tu primer cumpleaños que pase al lado tuyo como mi enamorada, lo cual te prometi que a partir de ahora yo no seria dias normales",
+                    "Te volvi a dar flores amarillas",
+                    "Me regalaste algo muy especial por nuestro año",
+                    
+                ],
+                fotos: [
+                    "img/foto12.2.jpeg",
+                    "img/foto12.3.jpeg",
+                    "img/foto12.1.jpeg"
+                ]
+            }
+            
+            // Se pueden agregar más meses aquí...
+        };
+
+        // Crear corazones flotantes
+        function crearCorazones() {
+            const corazonesContainer = document.getElementById('corazones-container');
+            const windowWidth = window.innerWidth;
+            
+            for (let i = 0; i < 15; i++) {
+                const corazon = document.createElement('div');
+                corazon.className = 'corazon-flotante';
+                corazon.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // Posición aleatoria
+                const left = Math.random() * windowWidth;
+                const delay = Math.random() * 8;
+                
+                corazon.style.left = `${left}px`;
+                corazon.style.top = `${Math.random() * 20 + 80}vh`;
+                corazon.style.animationDelay = `${delay}s`;
+                corazon.style.fontSize = `${Math.random() * 1.5 + 1.5}rem`;
+                
+                corazonesContainer.appendChild(corazon);
+            }
+        }
+        
+        // Actualizar contador de tiempo juntos (simulado)
+        function actualizarContador() {
+            // En una implementación real, aquí calcularías la diferencia
+            // entre la fecha actual y la fecha de inicio de relación
+            document.getElementById('anos').textContent = '1';
+            document.getElementById('meses').textContent = '0';
+            
+        }
+        
+        // Configurar modal para mostrar detalles del mes
+        function configurarModal() {
+            const modal = document.getElementById('modal-mes');
+            const btnCerrar = document.querySelector('.cerrar-modal');
+            const meses = document.querySelectorAll('.mes');
+            const miniaturas = document.querySelectorAll('.miniatura');
+            
+            // Cerrar modal
+            btnCerrar.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Cerrar modal al hacer clic fuera del contenido
+            window.addEventListener('click', function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Abrir modal al hacer clic en un mes
+            meses.forEach(mes => {
+                mes.addEventListener('click', function() {
+                    const numMes = this.getAttribute('data-mes');
+                    mostrarDetallesMes(numMes);
+                    modal.style.display = 'block';
+                });
+            });
+            
+            // Cambiar foto principal al hacer clic en miniatura
+            miniaturas.forEach(miniatura => {
+                miniatura.addEventListener('click', function() {
+                    const foto = this.getAttribute('data-foto');
+                    document.getElementById('foto-principal').src = foto;
+                });
+            });
+            
+            // Botones de acción
+            document.getElementById('btn-compartir').addEventListener('click', function() {
+                alert('¡Pronto podrás compartir este recuerdo especial!');
+            });
+            
+            document.getElementById('btn-guardar').addEventListener('click', function() {
+                alert('¡Este recuerdo se guardará para siempre en tu corazón! 💖');
+            });
+        }
+        
+        // Mostrar detalles del mes seleccionado
+        function mostrarDetallesMes(numMes) {
+            const datos = datosMeses[numMes] || {
+                titulo: "Mes " + numMes,
+                fecha: "Fecha especial",
+                mensajeDestacado: "Cada día a tu lado es un regalo. Te amo más de lo que las palabras pueden expresar.",
+                firma: "- Para ti, mi amor",
+                mensajes: [
+                    "Cada momento contigo es especial",
+                    "Tu sonrisa ilumina mis días",
+                    "Amo cómo me haces reír",
+                    "Eres lo mejor que me ha pasado"
+                ],
+                fotos: [
+                    "https://placehold.co/600x400/ffebf3/7c3f5c?text=Recuerdo+Especial",
+                    "https://placehold.co/600x400/ffebf3/7c3f5c?text=Momentos+Juntos",
+                    "https://placehold.co/600x400/ffebf3/7c3f5c?text=Nuestra+Historia"
+                ]
+            };
+            
+            // Actualizar el modal con los datos del mes
+            document.getElementById('titulo-mes').textContent = datos.titulo;
+            document.getElementById('fecha-mes').textContent = datos.fecha;
+            document.getElementById('mensaje-destacado').textContent = datos.mensajeDestacado;
+            document.getElementById('firma-mensaje').textContent = datos.firma;
+            
+            // Actualizar lista de mensajes
+            const listaMensajes = document.getElementById('lista-mensajes');
+            listaMensajes.innerHTML = '';
+            datos.mensajes.forEach(mensaje => {
+                const li = document.createElement('li');
+                li.textContent = mensaje;
+                listaMensajes.appendChild(li);
+            });
+            
+            // Actualizar fotos (en una app real, estas serían tus propias fotos)
+            document.getElementById('foto-principal').src = datos.fotos[0];
+            
+            const miniaturas = document.querySelectorAll('.miniatura');
+            miniaturas.forEach((miniatura, index) => {
+                if (datos.fotos[index]) {
+                    const img = miniatura.querySelector('img');
+                    img.src = datos.fotos[index];
+                    img.alt = "Recuerdo " + (index + 1);
+                    miniatura.setAttribute('data-foto', datos.fotos[index]);
+                }
+            });
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            crearCorazones();
+            actualizarContador();
+            configurarModal();
+            
+            
+        });
+    </script>
+
+    
+</body>
+</html>
